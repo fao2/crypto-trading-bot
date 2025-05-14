@@ -1,3 +1,15 @@
+# Python
+__pycache__/
+*.pyc
+*.env
+*.log
+
+# Virtual Environment
+venv/
+.env/
+
+# Data files
+config.json
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
