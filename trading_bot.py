@@ -134,3 +134,32 @@ if __name__ == "__main__":
             break
         
         time.sleep(1)
+import os
+from dotenv import load_dotenv
+
+load_dotenv()  # Load environment variables
+
+COINGECKO_API_KEY = os.getenv('COINGECKO_API_KEY', '')
+
+def get_market_data(self, coin_id='bitcoin'):
+    """Enhanced with API Key"""
+    url = f"https://api.coingecko.com/api/v3/coins/{coin_id}"
+    headers = {}
+    
+    if COINGECKO_API_KEY:
+        headers = {'x-cg-demo-api-key': COINGECKO_API_KEY}
+    
+    try:
+        response = requests.get(url, headers=headers)
+        response.raise_for_status()  # Raise error for bad status
+        data = response.json()
+        return {
+            'current_price': data['market_data']['current_price']['usd'],
+            'price_change_24h': data['market_data']['price_change_percentage_24h'],
+            'high_24h': data['market_data']['high_24h']['usd'],
+            'low_24h': data['market_data']['low_24h']['usd'],
+            'last_updated': data['last_updated']
+        }
+    except requests.exceptions.RequestException as e:
+        print(f"API Error: {e}")
+        return None
